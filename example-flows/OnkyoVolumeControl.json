@@ -1,0 +1,198 @@
+[
+    {
+        "id": "525341509fb3d38a",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "346aa6a9bcdd187a",
+        "type": "change",
+        "z": "525341509fb3d38a",
+        "name": "Toggle Mute",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "AMTTG",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 300,
+        "wires": [
+            [
+                "fdc88824dc09574d"
+            ]
+        ]
+    },
+    {
+        "id": "3d6fc401573ee75d",
+        "type": "change",
+        "z": "525341509fb3d38a",
+        "name": "Volume Up",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "MVLUP",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 180,
+        "wires": [
+            [
+                "fdc88824dc09574d"
+            ]
+        ]
+    },
+    {
+        "id": "1a7aa7895b7cf865",
+        "type": "change",
+        "z": "525341509fb3d38a",
+        "name": "Volume Down",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "MVLDOWN",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 240,
+        "wires": [
+            [
+                "fdc88824dc09574d"
+            ]
+        ]
+    },
+    {
+        "id": "fdc88824dc09574d",
+        "type": "function",
+        "z": "525341509fb3d38a",
+        "name": "Onkyo EISCP",
+        "func": "function buildEiscpPacket(command) {\n    // Payload: !1<COMMAND>\\r\n    const payload = Buffer.from(`!1${command}\\r`, \"ascii\");\n\n    const header = Buffer.alloc(16);\n\n    // \"ISCP\"\n    header.write(\"ISCP\", 0, 4, \"ascii\");\n\n    // Header size = 16\n    header.writeUInt32BE(16, 4);\n\n    // Data size = payload length\n    header.writeUInt32BE(payload.length, 8);\n\n    // Version = 1\n    header[12] = 0x01;\n    // bytes 13–15 stay 0\n\n    return Buffer.concat([header, payload]);\n}\n\n\nmsg.payload = buildEiscpPacket(msg.payload)\nreturn msg",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 240,
+        "wires": [
+            [
+                "2738e6759d4a0f23"
+            ]
+        ]
+    },
+    {
+        "id": "2738e6759d4a0f23",
+        "type": "tcp request",
+        "z": "525341509fb3d38a",
+        "name": "",
+        "server": "192.168.60.187",
+        "port": "60128",
+        "out": "sit",
+        "ret": "buffer",
+        "splitc": " ",
+        "newline": "",
+        "trim": false,
+        "tls": "",
+        "x": 1060,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d32a4762b7f63361",
+        "type": "surface-dial",
+        "z": "525341509fb3d38a",
+        "name": "",
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "b2c18fde179a4291"
+            ]
+        ]
+    },
+    {
+        "id": "b2c18fde179a4291",
+        "type": "switch",
+        "z": "525341509fb3d38a",
+        "name": "Event Type",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "clockwise",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "counter-clockwise",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "pressed",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "released",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 350,
+        "y": 240,
+        "wires": [
+            [
+                "3d6fc401573ee75d"
+            ],
+            [
+                "1a7aa7895b7cf865"
+            ],
+            [
+                "346aa6a9bcdd187a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "5702f84b15c52c98",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-surface-dial": "1.0.0"
+        }
+    }
+]
