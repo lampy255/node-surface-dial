@@ -1,2 +1,2 @@
 # node-surface-dial
-A NodeRed module for the Microsoft Surface Dial
+A NodeRED module for the Microsoft Surface Dial

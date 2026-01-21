@@ -1,0 +1,25 @@
+{
+  "name": "node-red-contrib-surface-dial",
+  "version": "1.0.0",
+  "description": "Node-RED node for Microsoft Surface Dial",
+  "keywords": [
+    "node-red",
+    "surface-dial",
+    "microsoft",
+    "hid"
+  ],
+  "author": "",
+  "license": "MIT",
+  "node-red": {
+    "version": ">=2.0.0",
+    "nodes": {
+      "surface-dial": "nodes/surface-dial.js"
+    }
+  },
+  "dependencies": {
+    "node-hid": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,41 @@
+<script type="text/javascript">
+    RED.nodes.registerType('surface-dial', {
+        category: 'input',
+        color: '#0078D4',
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "font-awesome/fa-circle-o-notch",
+        label: function() {
+            return this.name || "surface-dial";
+        },
+        paletteLabel: "surface-dial"
+    });
+</script>
+
+<script type="text/html" data-template-name="surface-dial">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="surface-dial">
+    <p>Discovers a local Microsoft Surface Dial, connects to it, and emits button and rotation events.</p>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>topic <span class="property-type">string</span></dt>
+        <dd><code>"button"</code> or <code>"rotation"</code></dd>
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>
+            <code>"pressed"</code> / <code>"released"</code> for button events<br>
+            <code>"clockwise"</code> / <code>"counter-clockwise"</code> for rotation events
+        </dd>
+    </dl>
+
+    <h3>Details</h3>
+    <p>Auto-connects to the Surface Dial on deploy and reconnects if disconnected.</p>
+</script>
